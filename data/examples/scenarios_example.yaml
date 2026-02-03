@@ -49,6 +49,7 @@ scenarios:
       price_discount: 0.0
       restriction_years: 0
       legally_binding: false
+      rental_percentage: 0.0
 
     quality:
       energy_rating: "B"
@@ -106,6 +107,7 @@ scenarios:
       price_discount: 0.15
       restriction_years: 30
       legally_binding: true
+      rental_percentage: 0.15
 
     quality:
       energy_rating: "A"
@@ -163,6 +165,7 @@ scenarios:
       price_discount: 0.10
       restriction_years: 25
       legally_binding: true
+      rental_percentage: 0.10
 
     quality:
       energy_rating: "A"
@@ -220,6 +223,7 @@ scenarios:
       price_discount: 0.18
       restriction_years: 35
       legally_binding: true
+      rental_percentage: 0.20
 
     quality:
       energy_rating: "A"
@@ -277,6 +281,7 @@ scenarios:
       price_discount: 0.25
       restriction_years: 99
       legally_binding: true
+      rental_percentage: 0.35
 
     quality:
       energy_rating: "A"
@@ -334,6 +339,7 @@ scenarios:
       price_discount: 0.12
       restriction_years: 20
       legally_binding: true
+      rental_percentage: 0.08
 
     quality:
       energy_rating: "A"
@@ -391,6 +397,7 @@ scenarios:
       price_discount: 0.14
       restriction_years: 28
       legally_binding: true
+      rental_percentage: 0.12
 
     quality:
       energy_rating: "A"
@@ -448,6 +455,7 @@ scenarios:
       price_discount: 0.16
       restriction_years: 32
       legally_binding: true
+      rental_percentage: 0.18
 
     quality:
       energy_rating: "A"

@@ -86,6 +86,7 @@ class AffordabilityParams:
     price_discount: float  # 0-1 (e.g., 0.2 = 20% below market)
     restriction_years: int
     legally_binding: bool
+    rental_percentage: float = 0.0  # 0-1, fraction of units that are rental
 
     def __post_init__(self) -> None:
         if not 0 <= self.percentage_affordable <= 1:
@@ -94,6 +95,8 @@ class AffordabilityParams:
             raise ValueError(f"price_discount must be between 0 and 1")
         if self.restriction_years < 0:
             raise ValueError(f"restriction_years must be non-negative")
+        if not 0 <= self.rental_percentage <= 1:
+            raise ValueError(f"rental_percentage must be between 0 and 1")
 
     @classmethod
     def from_dict(cls, data: Dict[str, Any]) -> "AffordabilityParams":
@@ -103,6 +106,7 @@ class AffordabilityParams:
             price_discount=data["price_discount"],
             restriction_years=data["restriction_years"],
             legally_binding=data["legally_binding"],
+            rental_percentage=data.get("rental_percentage", 0.0),
         )
 
     def to_dict(self) -> Dict[str, Any]:
@@ -112,6 +116,7 @@ class AffordabilityParams:
             "price_discount": self.price_discount,
             "restriction_years": self.restriction_years,
             "legally_binding": self.legally_binding,
+            "rental_percentage": self.rental_percentage,
         }
 
 

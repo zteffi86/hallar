@@ -253,7 +253,7 @@ class MonteCarloSimulation:
             cash_flows.append(revenue)
             periods.append(sale_month)
 
-            # JV adjustments if applicable
+            # JV adjustments if applicable - replace entire cash flow model
             if scenario.jv_params is not None:
                 jv = scenario.jv_params
                 project_profit = revenue - cost
@@ -263,15 +263,25 @@ class MonteCarloSimulation:
                 else:
                     city_share = project_profit * jv.loss_share
 
-                # City gets share instead of full revenue
-                cash_flows[-1] = city_share + cost  # Effectively: city_share instead of revenue-cost
+                # For JV: city invests equity, receives profit share (not full revenue)
+                equity_investment = cost * jv.city_equity_share
 
-                # Management fees
-                construction_years = int(sixty_pct / 12)
-                for year in range(construction_years):
-                    month = year * 12
+                # Replace cash flow model entirely for JV
+                cash_flows = []
+                periods = []
+
+                # Equity investment at start
+                cash_flows.append(-equity_investment)
+                periods.append(0)
+
+                # Return of equity + profit share at end
+                cash_flows.append(equity_investment + city_share)
+                periods.append(sale_month)
+
+                # Management fees (annual)
+                for year in range(max(1, int(sixty_pct / 12))):
                     cash_flows.append(-jv.management_fee_annual)
-                    periods.append(month)
+                    periods.append(year * 12)
 
             # Calculate NPV
             if periods:
@@ -321,60 +331,64 @@ class MonteCarloSimulation:
         """
         Run simulation for a scenario across all market conditions.
 
-        Results are probability-weighted by market scenario probabilities.
+        Uses proportional sampling based on market probabilities to preserve
+        variance structure and properly estimate risk.
 
         Args:
             scenario: Scenario definition
             markets: List of market scenarios
 
         Returns:
-            Tuple of (weighted results, dict of per-market results)
+            Tuple of (combined results, dict of per-market results)
         """
-        market_results = {}
         total_prob = sum(m.probability for m in markets)
 
-        # Run simulation for each market
+        # Initialize lists to collect samples proportionally
+        combined_arrays: Dict[str, list] = {
+            'npv': [],
+            'first_units_months': [],
+            'first_school_months': [],
+            'sixty_percent_months': [],
+            'total_cost': [],
+            'total_revenue': [],
+            'quality_score': [],
+            'affordability_score': [],
+            'developer_defaulted': [],
+        }
+        market_results = {}
+
+        # Run simulation for each market and sample proportionally
         for market in markets:
-            market_results[market.id] = self.run_scenario(scenario, market)
+            results = self.run_scenario(scenario, market)
+            market_results[market.id] = results
 
-        # Create weighted combination
-        weighted_npv = np.zeros(self.n_simulations)
-        weighted_first_units = np.zeros(self.n_simulations)
-        weighted_first_school = np.zeros(self.n_simulations)
-        weighted_sixty_pct = np.zeros(self.n_simulations)
-        weighted_cost = np.zeros(self.n_simulations)
-        weighted_revenue = np.zeros(self.n_simulations)
-        weighted_quality = np.zeros(self.n_simulations)
-        weighted_affordability = np.zeros(self.n_simulations)
-        weighted_defaulted = np.zeros(self.n_simulations, dtype=bool)
+            # Sample proportionally to market probability
+            n_samples = max(1, int(self.n_simulations * market.probability / total_prob))
+            indices = self.rng.choice(self.n_simulations, size=n_samples, replace=False)
 
-        for market in markets:
-            weight = market.probability / total_prob
-            results = market_results[market.id]
+            combined_arrays['npv'].extend(results.npv[indices])
+            combined_arrays['first_units_months'].extend(results.first_units_months[indices])
+            combined_arrays['first_school_months'].extend(results.first_school_months[indices])
+            combined_arrays['sixty_percent_months'].extend(results.sixty_percent_months[indices])
+            combined_arrays['total_cost'].extend(results.total_cost[indices])
+            combined_arrays['total_revenue'].extend(results.total_revenue[indices])
+            combined_arrays['quality_score'].extend(results.quality_score[indices])
+            combined_arrays['affordability_score'].extend(results.affordability_score[indices])
+            combined_arrays['developer_defaulted'].extend(results.developer_defaulted[indices])
 
-            weighted_npv += weight * results.npv
-            weighted_first_units += weight * results.first_units_months
-            weighted_first_school += weight * results.first_school_months
-            weighted_sixty_pct += weight * results.sixty_percent_months
-            weighted_cost += weight * results.total_cost
-            weighted_revenue += weight * results.total_revenue
-            weighted_quality += weight * results.quality_score
-            weighted_affordability += weight * results.affordability_score
-            weighted_defaulted |= results.developer_defaulted
-
-        weighted_results = SimulationResults(
-            npv=weighted_npv,
-            first_units_months=weighted_first_units,
-            first_school_months=weighted_first_school,
-            sixty_percent_months=weighted_sixty_pct,
-            total_cost=weighted_cost,
-            total_revenue=weighted_revenue,
-            quality_score=weighted_quality,
-            affordability_score=weighted_affordability,
-            developer_defaulted=weighted_defaulted,
+        combined_results = SimulationResults(
+            npv=np.array(combined_arrays['npv']),
+            first_units_months=np.array(combined_arrays['first_units_months']),
+            first_school_months=np.array(combined_arrays['first_school_months']),
+            sixty_percent_months=np.array(combined_arrays['sixty_percent_months']),
+            total_cost=np.array(combined_arrays['total_cost']),
+            total_revenue=np.array(combined_arrays['total_revenue']),
+            quality_score=np.array(combined_arrays['quality_score']),
+            affordability_score=np.array(combined_arrays['affordability_score']),
+            developer_defaulted=np.array(combined_arrays['developer_defaulted'], dtype=bool),
         )
 
-        return weighted_results, market_results
+        return combined_results, market_results
 
 
 def run_simulation(
@@ -457,7 +471,7 @@ def run_full_analysis(
             "affordable_percentage": scenario.affordability.percentage_affordable,
             "restriction_years": scenario.affordability.restriction_years,
             "energy_rating": scenario.quality.energy_rating,
-            "rental_percentage": scenario.affordability.percentage_affordable * 0.5,  # Estimate
+            "rental_percentage": scenario.affordability.rental_percentage,
         }
 
         passed, violations = constraints.check_all(sim_dict, deterministic_values)

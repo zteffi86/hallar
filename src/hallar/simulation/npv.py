@@ -88,11 +88,9 @@ def calculate_risk_adjusted_npv(
     variance = float(np.var(npv_distribution))
     std_dev = float(np.std(npv_distribution))
 
-    # Certainty equivalent (mean-variance utility)
-    if expected_npv > 0 and abs(expected_npv) > 1e-10:
-        certainty_equivalent = expected_npv - (lambda_risk_aversion * variance) / (2 * expected_npv)
-    else:
-        certainty_equivalent = expected_npv - lambda_risk_aversion * std_dev
+    # Certainty equivalent (standard mean-variance utility)
+    # CE = E[NPV] - (λ/2) * Var[NPV]
+    certainty_equivalent = expected_npv - (lambda_risk_aversion / 2) * variance
 
     # CVaR at 5% (expected value in worst 5% of outcomes)
     percentile_5 = np.percentile(npv_distribution, 5)
