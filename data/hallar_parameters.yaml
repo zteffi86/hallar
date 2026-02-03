@@ -1,0 +1,193 @@
+# Hallar Project Parameters
+# These are the specific values for the Hallar development site
+
+hallar_site:
+  name: "Hallar"
+  location: "Reykjavík"
+  total_area_hectares: 45  # Approximate
+
+buildable_area:
+  total_sqm: 300000  # Total buildable square meters
+  residential_sqm: 270000  # 90% residential
+  commercial_sqm: 30000  # 10% commercial/services
+
+unit_assumptions:
+  average_unit_size_sqm: 85
+  total_units: 3200  # 270000 / 85 rounded
+  units_per_phase: 400
+  number_of_phases: 8
+
+byggingarrettur_valuation:
+  # Market value of development rights
+  per_sqm:
+    min: 45000  # ISK per buildable sqm
+    likely: 55000
+    max: 70000
+  total_value:
+    min: 13500  # M ISK (300000 * 45000 / 1M)
+    likely: 16500  # M ISK (300000 * 55000 / 1M)
+    max: 21000  # M ISK (300000 * 70000 / 1M)
+  notes: |
+    Values based on recent Reykjavík land transactions.
+    Actual value should be determined by independent appraisal.
+
+infrastructure_costs:
+  # All values in M ISK
+  total:
+    min: 6000
+    likely: 8000
+    max: 11000
+  breakdown:
+    roads_and_streets:
+      share: 0.25
+      cost:
+        min: 1500
+        likely: 2000
+        max: 2750
+      includes:
+        - "Main access roads"
+        - "Internal streets"
+        - "Sidewalks and bike paths"
+        - "Street lighting"
+        - "Signage"
+    utilities:
+      share: 0.30
+      cost:
+        min: 1800
+        likely: 2400
+        max: 3300
+      includes:
+        - "Water supply"
+        - "Sewage system"
+        - "Electricity distribution"
+        - "District heating connection"
+        - "Fiber optic network"
+    school:
+      share: 0.25
+      cost:
+        min: 1500
+        likely: 2000
+        max: 2750
+      includes:
+        - "Primary school building"
+        - "Playground"
+        - "Sports facilities"
+      capacity: 600  # students
+    parks_and_public_space:
+      share: 0.10
+      cost:
+        min: 600
+        likely: 800
+        max: 1100
+      includes:
+        - "Central park"
+        - "Playgrounds"
+        - "Public squares"
+        - "Green corridors"
+    other:
+      share: 0.10
+      cost:
+        min: 600
+        likely: 800
+        max: 1100
+      includes:
+        - "Contingency"
+        - "Design and planning"
+        - "Permits and fees"
+        - "Project management"
+
+construction_costs:
+  # Per sqm construction cost (not including land)
+  residential:
+    min: 350000  # ISK per sqm
+    likely: 420000
+    max: 520000
+  affordable_residential:
+    min: 300000  # ISK per sqm (simpler finishes)
+    likely: 360000
+    max: 450000
+  commercial:
+    min: 320000
+    likely: 380000
+    max: 480000
+  notes: |
+    Affordable units cost ~15% less due to simpler finishes.
+    Costs include construction only, not land or infrastructure.
+
+revenue_assumptions:
+  # Sale price per sqm
+  market_residential:
+    min: 650000  # ISK per sqm
+    likely: 750000
+    max: 900000
+  affordable_residential:
+    # Discounted from market
+    discount_from_market: 0.25  # 25% below market
+    min: 487500
+    likely: 562500
+    max: 675000
+  commercial:
+    min: 550000
+    likely: 650000
+    max: 800000
+  rental_yield:
+    annual: 0.045  # 4.5% gross yield for rental calculations
+
+timeline_assumptions:
+  # All in months from project start
+  planning_and_permits:
+    min: 6
+    likely: 12
+    max: 18
+  first_units_complete:
+    min: 24
+    likely: 30
+    max: 42
+  school_complete:
+    min: 36
+    likely: 48
+    max: 60
+  sixty_percent_complete:
+    min: 48
+    likely: 60
+    max: 84
+  full_completion:
+    min: 84
+    likely: 108
+    max: 144
+  critical_milestones:
+    infrastructure_before_units: 150  # Infrastructure must be ready before 150 units occupied
+    school_before_units: 500  # School must be ready before 500 units occupied
+
+market_context:
+  # Current market conditions (to be updated)
+  housing_shortage: true
+  annual_demand_reykjavik: 2500  # units per year
+  current_interest_rates:
+    mortgage: 0.065  # 6.5%
+    construction_loan: 0.08  # 8%
+    pension_fund_lending: 0.045  # 4.5%
+  inflation_rate: 0.06  # 6% (historical average)
+
+discount_rates:
+  # For NPV calculations
+  city:
+    real: 0.03  # 3% real discount rate
+    nominal: 0.09  # 9% nominal (including inflation)
+  developer:
+    real: 0.10  # 10% required real return
+    nominal: 0.16
+  pension_fund:
+    real: 0.035  # 3.5% real target return
+    nominal: 0.095
+
+political_context:
+  election_cycle_years: 4
+  next_election: "2026"
+  current_coalition: "Center-left"
+  housing_policy_priority: "high"
+  affordability_target: 0.25  # Current policy: 25% affordable
+  notes: |
+    Housing is a top political issue in Reykjavík.
+    There is cross-party support for increasing housing supply.
+    Affordability commitments are politically important.

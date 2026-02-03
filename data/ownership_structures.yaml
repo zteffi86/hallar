@@ -1,0 +1,543 @@
+# Ownership Structures for Hallar DSS
+# Defines who owns and controls the development
+
+ownership_structures:
+  O1:
+    id: "O1"
+    name: "City Direct"
+    name_is: "Borg beint"
+    short_name: "City 100%"
+    description: "City owns and operates entire development directly"
+    description_is: "Borgin á og rekur alla framkvæmdina beint"
+
+    parties:
+      - party: "Reykjavíkurborg"
+        role: "owner"
+        equity_share: 1.0
+
+    characteristics:
+      city_role: "Full owner, developer, risk bearer"
+      governance: "City departments / project office"
+      decision_speed: "slow"
+      flexibility: "high"
+      city_control_score: 100
+
+    risk_allocation:
+      construction_risk: "city"
+      market_risk: "city"
+      counterparty_risk: "none"
+      political_risk: "high_exposure"
+
+    financial_profile:
+      city_upfront_investment: "full_project_cost"
+      city_ongoing_cost: "operations_and_maintenance"
+      profit_distribution: "100%_to_city"
+      loss_distribution: "100%_to_city"
+
+    requirements:
+      city_capacity: "high"
+      political_support: "high"
+      budget_availability: "high"
+
+    pros:
+      - "Full control over all decisions"
+      - "No profit leakage to private sector"
+      - "Can prioritize any social goal"
+      - "No counterparty default risk"
+      - "Can adapt as needs change"
+    cons:
+      - "City bears 100% of risk"
+      - "Requires significant city capacity"
+      - "Slow political decision-making"
+      - "Full political exposure for problems"
+      - "Large budget commitment"
+
+    compatible_with:
+      financing: ["F1"]
+      byggingarrettur: ["N/A"]
+      infrastructure: ["I1", "I4"]
+
+    best_when:
+      - "City has strong project management capacity"
+      - "Private market is weak or disinterested"
+      - "Maximum control is top priority"
+      - "Long timeline is acceptable"
+      - "Budget is available"
+
+  O2:
+    id: "O2"
+    name: "Private Developer"
+    name_is: "Einkaframkvæmdaraðili"
+    short_name: "Developer 100%"
+    description: "Private developer owns and executes the entire project"
+    description_is: "Einkaframkvæmdaraðili á og framkvæmir allt verkefnið"
+
+    parties:
+      - party: "Private Developer"
+        role: "owner"
+        equity_share: 1.0
+
+    characteristics:
+      city_role: "Seller of byggingarrétt"
+      governance: "Developer"
+      decision_speed: "fast"
+      flexibility: "low_after_contract"
+      city_control_score: 10
+
+    risk_allocation:
+      construction_risk: "developer"
+      market_risk: "developer"
+      counterparty_risk: "high"
+      political_risk: "low"
+
+    financial_profile:
+      city_upfront_investment: "none"
+      city_ongoing_cost: "none"
+      profit_distribution: "100%_to_developer"
+      loss_distribution: "100%_to_developer"
+
+    counterparty_risk_by_tier:
+      small_developer:
+        default_probability:
+          min: 0.10
+          likely: 0.15
+          max: 0.20
+        recovery_rate:
+          min: 0.40
+          likely: 0.50
+          max: 0.60
+      large_developer:
+        default_probability:
+          min: 0.05
+          likely: 0.08
+          max: 0.12
+        recovery_rate:
+          min: 0.50
+          likely: 0.65
+          max: 0.75
+
+    pros:
+      - "Maximum risk transfer"
+      - "Private sector speed and efficiency"
+      - "No city capacity needed"
+      - "No ongoing city involvement"
+      - "Immediate cash from sale"
+    cons:
+      - "High counterparty default risk"
+      - "Loss of control over outcomes"
+      - "Profit motive may reduce quality/affordability"
+      - "Single point of failure"
+
+    compatible_with:
+      financing: ["F2", "F4"]
+      byggingarrettur: ["B1", "B2", "B4", "B5"]
+      infrastructure: ["I2", "I3", "I5"]
+
+    best_when:
+      - "Speed is top priority"
+      - "City wants full risk transfer"
+      - "Strong developer market exists"
+      - "Social outcomes can be contracted"
+
+  O3:
+    id: "O3"
+    name: "City-Developer JV"
+    name_is: "Borg-Framkvæmdaraðili samstarf"
+    short_name: "City+Dev JV"
+    description: "Joint venture between city and private developer"
+    description_is: "Samvinnuverkefni borgar og einkaframkvæmdaraðila"
+
+    parties:
+      - party: "Reykjavíkurborg"
+        role: "partner"
+        equity_share: 0.40
+      - party: "Private Developer"
+        role: "partner"
+        equity_share: 0.60
+
+    characteristics:
+      city_role: "Equity partner with board representation"
+      governance: "Joint board"
+      decision_speed: "medium"
+      flexibility: "medium"
+      city_control_score: 55
+
+    risk_allocation:
+      construction_risk: "shared"
+      market_risk: "shared"
+      counterparty_risk: "medium"
+      political_risk: "medium"
+
+    financial_profile:
+      city_upfront_investment: "equity_share_of_cost"
+      city_ongoing_cost: "share_of_operations"
+      profit_distribution: "pro_rata"
+      loss_distribution: "pro_rata"
+
+    governance_structure:
+      board_seats_city: 2
+      board_seats_developer: 3
+      major_decisions: "super_majority"
+      city_veto_rights:
+        - "Affordability changes"
+        - "Quality downgrades"
+        - "Timeline extensions > 12mo"
+
+    pros:
+      - "Shared risk"
+      - "City participates in upside"
+      - "City has governance role"
+      - "Developer brings expertise"
+    cons:
+      - "City still exposed to losses"
+      - "Governance complexity"
+      - "Partner disputes possible"
+      - "Exit is complex"
+
+    compatible_with:
+      financing: ["F6"]
+      byggingarrettur: ["B3", "B6"]
+      infrastructure: ["I1", "I2", "I6"]
+
+    best_when:
+      - "City wants upside participation"
+      - "Risk sharing is acceptable"
+      - "Developer partner is trusted"
+      - "Long-term involvement desired"
+
+  O4:
+    id: "O4"
+    name: "Pension Fund Direct"
+    name_is: "Lífeyrissjóður beint"
+    short_name: "Pension 100%"
+    description: "Pension fund owns and develops the project"
+    description_is: "Lífeyrissjóður á og þróar verkefnið"
+
+    parties:
+      - party: "Lífeyrissjóður"
+        role: "owner"
+        equity_share: 1.0
+
+    characteristics:
+      city_role: "Seller of byggingarrétt"
+      governance: "Pension fund board"
+      decision_speed: "medium"
+      flexibility: "medium"
+      city_control_score: 10
+
+    risk_allocation:
+      construction_risk: "pension_fund"
+      market_risk: "pension_fund"
+      counterparty_risk: "very_low"
+      political_risk: "low"
+
+    financial_profile:
+      city_upfront_investment: "none"
+      city_ongoing_cost: "none"
+      profit_distribution: "100%_to_pension"
+      loss_distribution: "100%_to_pension"
+
+    pension_fund_characteristics:
+      default_probability:
+        min: 0.001
+        likely: 0.005
+        max: 0.01
+      cost_of_capital:
+        min: 0.04
+        likely: 0.05
+        max: 0.06
+      time_horizon: "30+_years"
+      profit_requirement: "adequate_real_return"
+      social_alignment: "often_mission_aligned"
+      capital_availability: "very_high"
+
+    pros:
+      - "Extremely low counterparty risk"
+      - "Lower cost of capital than developers"
+      - "Long-term perspective"
+      - "Often social mission alignment"
+      - "Massive capital availability"
+    cons:
+      - "City has no control after sale"
+      - "May be slower decision-making"
+      - "Less construction expertise (needs partners)"
+      - "Pension may have specific requirements"
+
+    compatible_with:
+      financing: ["F3"]
+      byggingarrettur: ["B1", "B4"]
+      infrastructure: ["I2", "I6"]
+
+    best_when:
+      - "Low counterparty risk is priority"
+      - "Long-term rental focus acceptable"
+      - "City comfortable with institutional owner"
+      - "Social outcomes negotiable"
+
+  O5:
+    id: "O5"
+    name: "Pension-City JV"
+    name_is: "Lífeyrissjóður-Borg samstarf"
+    short_name: "Pension+City JV"
+    description: "Joint venture between pension fund and city"
+    description_is: "Samvinnuverkefni lífeyrissjóðs og borgar"
+
+    parties:
+      - party: "Lífeyrissjóður"
+        role: "partner"
+        equity_share: 0.60
+      - party: "Reykjavíkurborg"
+        role: "partner"
+        equity_share: 0.40
+
+    characteristics:
+      city_role: "Equity partner (often land as equity)"
+      governance: "Joint board"
+      decision_speed: "medium"
+      flexibility: "medium"
+      city_control_score: 45
+
+    risk_allocation:
+      construction_risk: "shared"
+      market_risk: "shared"
+      counterparty_risk: "very_low"
+      political_risk: "medium"
+
+    financial_profile:
+      city_upfront_investment: "land_as_equity_or_cash"
+      city_ongoing_cost: "share_of_operations"
+      profit_distribution: "pro_rata"
+      loss_distribution: "pro_rata"
+
+    city_contribution_options:
+      land_as_equity:
+        description: "City contributes byggingarrétt valued as equity"
+        cash_required: "none"
+        share_calculation: "land_value / total_project_value"
+      cash_equity:
+        description: "City contributes cash"
+        typical_share: 0.30
+      hybrid:
+        description: "Part land, part cash"
+
+    pros:
+      - "Very low counterparty risk"
+      - "City participates in upside"
+      - "City has governance role"
+      - "Land as equity preserves city cash"
+      - "Pension stability and capital"
+    cons:
+      - "City shares in losses"
+      - "Governance complexity"
+      - "'City in business' political risk"
+      - "Exit complexity"
+
+    compatible_with:
+      financing: ["F7"]
+      byggingarrettur: ["B3"]
+      infrastructure: ["I1", "I6"]
+
+    best_when:
+      - "City wants upside without cash investment"
+      - "Long-term partnership acceptable"
+      - "Pension fund well-aligned on goals"
+      - "Risk sharing with stable partner desired"
+
+  O6:
+    id: "O6"
+    name: "Pension-Developer Partnership"
+    name_is: "Lífeyrissjóður-Framkvæmdaraðili"
+    short_name: "Pension+Dev"
+    description: "Pension provides capital, developer executes"
+    description_is: "Lífeyrissjóður leggur til fjármagn, framkvæmdaraðili framkvæmir"
+
+    parties:
+      - party: "Lífeyrissjóður"
+        role: "capital_partner"
+        equity_share: 0.60
+      - party: "Private Developer"
+        role: "execution_partner"
+        equity_share: 0.40
+
+    characteristics:
+      city_role: "Seller of byggingarrétt"
+      governance: "Joint with pension majority"
+      decision_speed: "medium_fast"
+      flexibility: "medium"
+      city_control_score: 5
+
+    risk_allocation:
+      construction_risk: "developer_guaranteed"
+      market_risk: "shared"
+      counterparty_risk: "low"
+      political_risk: "low"
+
+    financial_profile:
+      city_upfront_investment: "none"
+      city_ongoing_cost: "none"
+      profit_distribution: "to_partnership"
+      loss_distribution: "to_partnership"
+
+    key_mechanism: |
+      Developer default risk greatly reduced because:
+      - Pension can replace developer if needed
+      - Developer equity at risk first
+      - Pension has resources to complete project
+
+    default_probability:
+      min: 0.02
+      likely: 0.04
+      max: 0.06
+
+    pros:
+      - "Developer efficiency"
+      - "Pension capital stability"
+      - "Much lower default risk than developer alone"
+      - "Combined expertise"
+      - "City gets clean sale"
+    cons:
+      - "City has no ongoing role"
+      - "Profits go to pension + developer"
+      - "Complex partnership dynamics"
+
+    compatible_with:
+      financing: ["F5"]
+      byggingarrettur: ["B1", "B2"]
+      infrastructure: ["I2"]
+
+    best_when:
+      - "Want developer speed with lower risk"
+      - "City comfortable stepping back"
+      - "Pension willing to partner"
+
+  O7:
+    id: "O7"
+    name: "Tri-Party Structure"
+    name_is: "Þríhliða uppbygging"
+    short_name: "City+Pension+Dev"
+    description: "City, pension fund, and developer all participate"
+    description_is: "Borg, lífeyrissjóður og framkvæmdaraðili taka allir þátt"
+
+    parties:
+      - party: "Reykjavíkurborg"
+        role: "partner"
+        equity_share: 0.25
+      - party: "Lífeyrissjóður"
+        role: "partner"
+        equity_share: 0.50
+      - party: "Private Developer"
+        role: "partner"
+        equity_share: 0.25
+
+    characteristics:
+      city_role: "Partner (land + governance)"
+      governance: "Tri-party board"
+      decision_speed: "slow"
+      flexibility: "low"
+      city_control_score: 35
+
+    risk_allocation:
+      construction_risk: "distributed"
+      market_risk: "distributed"
+      counterparty_risk: "very_low"
+      political_risk: "medium"
+      coordination_risk: "high"
+
+    governance_structure:
+      board_composition:
+        city: 2
+        pension: 3
+        developer: 2
+      voting:
+        routine: "majority"
+        major: "2_of_3_parties"
+        fundamental: "unanimous"
+
+    pros:
+      - "Risk distributed three ways"
+      - "City has seat at table"
+      - "Pension stability"
+      - "Developer expertise"
+      - "Aligned incentives"
+    cons:
+      - "Governance very complex"
+      - "Slow decisions"
+      - "Three-way disagreements"
+      - "Exit extremely complex"
+
+    compatible_with:
+      financing: ["F5", "F7"]
+      byggingarrettur: ["B3", "B6"]
+      infrastructure: ["I6"]
+
+    best_when:
+      - "All parties well-aligned"
+      - "Complex project needs diverse expertise"
+      - "Long-term horizon"
+      - "Risk distribution priority"
+
+  O8:
+    id: "O8"
+    name: "Félagsbústaðir-led"
+    name_is: "Félagsbústaðir í forystu"
+    short_name: "FB"
+    description: "Municipal housing company leads development"
+    description_is: "Félagsbústaðir leiðir framkvæmdina"
+
+    parties:
+      - party: "Félagsbústaðir"
+        role: "owner"
+        equity_share: 1.0
+
+    characteristics:
+      city_role: "Indirect (FB is city-owned)"
+      governance: "FB board (city-appointed)"
+      decision_speed: "medium"
+      flexibility: "medium"
+      city_control_score: 75
+
+    risk_allocation:
+      construction_risk: "FB"
+      market_risk: "FB_low_for_rental"
+      counterparty_risk: "low"
+      political_risk: "medium"
+
+    financial_profile:
+      city_upfront_investment: "byggingarrettur_discount"
+      city_ongoing_cost: "possible_operating_support"
+      profit_distribution: "FB_reinvests"
+      loss_distribution: "FB_absorbs_city_backstop"
+
+    fb_characteristics:
+      default_probability:
+        min: 0.01
+        likely: 0.025
+        max: 0.05
+      cost_of_capital: 0.06
+      focus: "social_rental_housing"
+      expertise: "housing_operations"
+      social_mission: "very_high"
+      balance_sheet_constraint: "limited_debt_capacity"
+
+    pros:
+      - "Mission-aligned"
+      - "City indirect control"
+      - "Social housing expertise"
+      - "Pension financing available"
+      - "Integrated with city housing policy"
+    cons:
+      - "FB balance sheet constraints"
+      - "May be slower"
+      - "Limited to social/rental model"
+      - "Requires FB capacity"
+
+    compatible_with:
+      financing: ["F4", "F8"]
+      byggingarrettur: ["B2"]
+      infrastructure: ["I1"]
+
+    best_when:
+      - "Social housing is primary goal"
+      - "FB has capacity"
+      - "Rental housing focus"
+      - "City wants arm's-length involvement"

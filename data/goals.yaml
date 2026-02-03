@@ -1,0 +1,154 @@
+# Goals (Markmið) - What politicians prioritize
+# Weights must sum to 100%
+
+goals:
+  G1:
+    id: "G1"
+    name: "Hraði"
+    name_en: "Speed"
+    description: "Hversu hratt byrja íbúðir að verða tilbúnar"
+    description_en: "How quickly housing units become available"
+    icon: "⚡"
+    metrics:
+      - first_units_months
+      - sixty_percent_months
+    direction: minimize  # Lower is better
+
+  G2:
+    id: "G2"
+    name: "Húsnæðisöryggi"
+    name_en: "Affordability"
+    description: "Hlutfall íbúða á viðráðanlegu verði"
+    description_en: "Percentage of affordable housing units"
+    icon: "🏠"
+    metrics:
+      - affordable_percentage
+      - price_discount
+      - restriction_years
+    direction: maximize
+
+  G3:
+    id: "G3"
+    name: "Gæði"
+    name_en: "Quality"
+    description: "Byggingarstöðull og orkuflokkar"
+    description_en: "Construction quality and energy ratings"
+    icon: "⭐"
+    metrics:
+      - energy_rating
+      - defect_rate
+      - quality_score
+    direction: maximize
+
+  G4:
+    id: "G4"
+    name: "Fjárhagur"
+    name_en: "Financial"
+    description: "Hrein núvirði fyrir borgina"
+    description_en: "Net present value for the city"
+    icon: "💰"
+    metrics:
+      - expected_npv
+      - prob_loss
+      - cvar_05
+    direction: maximize
+
+  G5:
+    id: "G5"
+    name: "Áhættustýring"
+    name_en: "Risk Management"
+    description: "Lágmarka líkur á mistökum"
+    description_en: "Minimize probability of failure"
+    icon: "🛡️"
+    metrics:
+      - default_probability
+      - cost_overrun_risk
+      - delay_risk
+    direction: minimize
+
+  G6:
+    id: "G6"
+    name: "Stjórn"
+    name_en: "Control"
+    description: "Hversu mikla stjórn hefur borgin"
+    description_en: "Level of city control over development"
+    icon: "🎛️"
+    metrics:
+      - city_control
+      - veto_power
+      - design_authority
+    direction: maximize
+
+# Preset weight profiles
+presets:
+  balanced:
+    name: "Jafnvægi"
+    name_en: "Balanced"
+    description: "Jafn áhersla á öll markmið"
+    weights:
+      G1: 0.167
+      G2: 0.167
+      G3: 0.167
+      G4: 0.167
+      G5: 0.167
+      G6: 0.165
+
+  speed_focused:
+    name: "Hraðaforgangur"
+    name_en: "Speed Priority"
+    description: "Forgangsraða hraða umfram annað"
+    weights:
+      G1: 0.35
+      G2: 0.20
+      G3: 0.15
+      G4: 0.10
+      G5: 0.10
+      G6: 0.10
+
+  social_focused:
+    name: "Félagsleg áhersla"
+    name_en: "Social Priority"
+    description: "Forgangsraða húsnæðisöryggi og gæðum"
+    weights:
+      G1: 0.15
+      G2: 0.35
+      G3: 0.25
+      G4: 0.10
+      G5: 0.10
+      G6: 0.05
+
+  financial_focused:
+    name: "Fjárhagsleg áhersla"
+    name_en: "Financial Priority"
+    description: "Hámarka fjárhagslegan ávinning borgarinnar"
+    weights:
+      G1: 0.10
+      G2: 0.15
+      G3: 0.15
+      G4: 0.35
+      G5: 0.15
+      G6: 0.10
+
+  risk_averse:
+    name: "Áhættufælni"
+    name_en: "Risk Averse"
+    description: "Lágmarka áhættu og tryggja stjórn"
+    weights:
+      G1: 0.10
+      G2: 0.15
+      G3: 0.15
+      G4: 0.15
+      G5: 0.30
+      G6: 0.15
+
+  control_focused:
+    name: "Stjórnunaráhersla"
+    name_en: "Control Priority"
+    description: "Hámarkaðri stjórn borgarinnar á framkvæmdum"
+    weights:
+      G1: 0.10
+      G2: 0.20
+      G3: 0.15
+      G4: 0.10
+      G5: 0.15
+      G6: 0.30

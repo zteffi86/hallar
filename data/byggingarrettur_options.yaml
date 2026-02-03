@@ -1,0 +1,126 @@
+# Byggingarrétt Disposition Options for Hallar DSS
+# How the city disposes of its development rights
+
+reference_values:
+  market_byggingarrettur: 16500  # M ISK
+  infrastructure_cost: 8000  # M ISK
+
+byggingarrettur_options:
+  B1:
+    id: "B1"
+    name: "Market Sale"
+    name_is: "Markaðssala"
+    description: "Sell byggingarrétt at full market price"
+
+    pricing:
+      method: "market"
+      discount: 0.0
+      expected_price:
+        min: 13500
+        likely: 16500
+        max: 21000
+
+    city_receives:
+      type: "cash"
+      timing: "upfront_or_staged"
+      certainty: "high"
+
+    compatible_with:
+      ownership: ["O2", "O4", "O6"]
+      financing: ["F2", "F3", "F4", "F5"]
+
+  B2:
+    id: "B2"
+    name: "Discounted Sale"
+    name_is: "Afsláttarsala"
+    description: "Sell byggingarrétt below market as implicit subsidy"
+
+    pricing:
+      method: "discounted"
+      discount_range:
+        min: 0.10
+        likely: 0.20
+        max: 0.40
+
+    city_receives:
+      type: "cash"
+      timing: "upfront_or_staged"
+
+    compatible_with:
+      ownership: ["O2", "O6", "O8"]
+      financing: ["F2", "F4", "F5"]
+
+  B3:
+    id: "B3"
+    name: "Equity Contribution"
+    name_is: "Eiginfjárframlag"
+    description: "Contribute byggingarrétt as equity in joint venture"
+
+    pricing:
+      method: "agreed_valuation"
+      valuation_range:
+        min: 13000
+        likely: 15000
+        max: 16500
+
+    city_receives:
+      type: "equity_stake"
+      timing: "returns_over_time"
+      certainty: "uncertain"
+
+    compatible_with:
+      ownership: ["O3", "O5", "O7"]
+      financing: ["F6", "F7"]
+
+  B4:
+    id: "B4"
+    name: "Annual Lease"
+    name_is: "Árleg leiga"
+    description: "Lease byggingarrétt with annual payments"
+
+    pricing:
+      method: "annual_payment"
+      annual_rate:
+        min: 0.03
+        likely: 0.04
+        max: 0.05
+
+    city_receives:
+      type: "annual_payments"
+      timing: "yearly_for_lease_term"
+      term_years: 99
+
+    compatible_with:
+      ownership: ["O2", "O4", "O6"]
+      financing: ["F2", "F3"]
+
+  B5:
+    id: "B5"
+    name: "Infrastructure Swap"
+    name_is: "Innviðaskipti"
+    description: "Trade byggingarrétt value for developer-built infrastructure"
+
+    pricing:
+      method: "value_equivalence"
+      byggingarrettur_price: 8000  # Matches infrastructure cost
+
+    city_receives:
+      type: "infrastructure"
+      timing: "upon_completion"
+
+    compatible_with:
+      ownership: ["O2", "O6"]
+      financing: ["F2", "F5"]
+
+  B6:
+    id: "B6"
+    name: "Hybrid"
+    name_is: "Blandað"
+    description: "Combination of above methods, often phased"
+
+    pricing:
+      method: "mixed"
+
+    compatible_with:
+      ownership: ["O3", "O5", "O7"]
+      financing: ["F5", "F6", "F7"]

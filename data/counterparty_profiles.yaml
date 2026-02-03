@@ -1,0 +1,125 @@
+# Counterparty Profiles for Hallar DSS
+# Defines default probabilities and characteristics by counterparty type
+
+counterparty_profiles:
+  pension_fund_direct:
+    id: "pension_fund_direct"
+    name: "Pension Fund (Direct Owner)"
+    name_is: "Lífeyrissjóður (beinn eigandi)"
+    category: "pension_fund"
+    color: "#27AE60"
+
+    default_probability:
+      min: 0.001
+      likely: 0.005
+      max: 0.01
+
+    cost_of_capital: 0.05
+    time_horizon: "30+_years"
+
+  pension_fund_partner:
+    id: "pension_fund_partner"
+    name: "Pension Fund (JV Partner)"
+    name_is: "Lífeyrissjóður (samstarfsaðili)"
+    category: "pension_fund"
+    color: "#27AE60"
+
+    default_probability:
+      min: 0.005
+      likely: 0.01
+      max: 0.02
+
+    cost_of_capital: 0.05
+
+  developer_large:
+    id: "developer_large"
+    name: "Large Developer"
+    name_is: "Stór framkvæmdaraðili"
+    category: "developer"
+    color: "#E74C3C"
+
+    default_probability:
+      min: 0.03
+      likely: 0.06
+      max: 0.10
+
+    recovery_rate:
+      min: 0.50
+      likely: 0.65
+      max: 0.75
+
+    cost_of_capital: 0.10
+
+  developer_medium:
+    id: "developer_medium"
+    name: "Medium Developer"
+    name_is: "Meðalstór framkvæmdaraðili"
+    category: "developer"
+    color: "#E74C3C"
+
+    default_probability:
+      min: 0.06
+      likely: 0.10
+      max: 0.15
+
+    recovery_rate:
+      min: 0.40
+      likely: 0.55
+      max: 0.65
+
+    cost_of_capital: 0.12
+
+  developer_small:
+    id: "developer_small"
+    name: "Small Developer"
+    name_is: "Lítill framkvæmdaraðili"
+    category: "developer"
+    color: "#E74C3C"
+
+    default_probability:
+      min: 0.10
+      likely: 0.18
+      max: 0.25
+
+    recovery_rate:
+      min: 0.30
+      likely: 0.45
+      max: 0.55
+
+    cost_of_capital: 0.14
+
+  felagsbustadir:
+    id: "felagsbustadir"
+    name: "Félagsbústaðir"
+    name_is: "Félagsbústaðir"
+    category: "municipal"
+    color: "#3498DB"
+
+    default_probability:
+      min: 0.01
+      likely: 0.025
+      max: 0.05
+
+    cost_of_capital: 0.06
+    social_mission: "very_high"
+
+# Risk adjustment by counterparty
+risk_adjustment_matrix:
+  pension_fund_direct:
+    default_probability_multiplier: 0.05
+    cost_of_capital_reduction: 0.06
+  pension_fund_partner:
+    default_probability_multiplier: 0.20
+    cost_of_capital_reduction: 0.04
+  developer_large:
+    default_probability_multiplier: 0.60
+    cost_of_capital_reduction: 0.02
+  developer_medium:
+    default_probability_multiplier: 1.00
+    cost_of_capital_reduction: 0.00
+  developer_small:
+    default_probability_multiplier: 1.80
+    cost_of_capital_reduction: -0.02
+  felagsbustadir:
+    default_probability_multiplier: 0.25
+    cost_of_capital_reduction: 0.04

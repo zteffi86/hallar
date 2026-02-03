@@ -1,0 +1,168 @@
+# Side Constraints (Hliðarskilyrði) for Hallar DSS
+# These are hard requirements that filter out scenarios regardless of goal scores
+
+description: |
+  Side constraints are non-negotiable requirements.
+  Any scenario that violates a side constraint is disqualified,
+  no matter how well it scores on the goals.
+
+constraint_categories:
+  throughput:
+    name: "Throughput"
+    name_is: "Afköst"
+    color: "#E74C3C"
+  timing:
+    name: "Timing"
+    name_is: "Tímasetning"
+    color: "#F39C12"
+  social:
+    name: "Social"
+    name_is: "Félagsleg"
+    color: "#27AE60"
+  quality:
+    name: "Quality"
+    name_is: "Gæði"
+    color: "#9B59B6"
+  financial:
+    name: "Financial"
+    name_is: "Fjárhagsleg"
+    color: "#3498DB"
+
+side_constraints:
+  # TIMING CONSTRAINTS
+  first_units_deadline:
+    id: "first_units_deadline"
+    name: "First Units By Date"
+    name_is: "Fyrstu íbúðir fyrir dagsetningu"
+    category: "timing"
+    type: "deadline"
+    metric: "first_units_months"
+    default_value: 48
+    min_value: 24
+    max_value: 72
+    unit: "months"
+    confidence: 0.80
+    enabled: true
+    violation_message: "P(first units by {threshold} months) < 80%"
+
+  school_deadline:
+    id: "school_deadline"
+    name: "School By Date"
+    name_is: "Skóli fyrir dagsetningu"
+    category: "timing"
+    type: "deadline"
+    metric: "first_school_months"
+    default_value: 60
+    min_value: 36
+    max_value: 84
+    unit: "months"
+    confidence: 0.80
+    enabled: true
+    violation_message: "P(school by {threshold} months) < 80%"
+
+  # SOCIAL CONSTRAINTS
+  min_affordable_pct:
+    id: "min_affordable_pct"
+    name: "Minimum Affordable Percentage"
+    name_is: "Lágmarkshlutfall hagkvæmra íbúða"
+    category: "social"
+    type: "minimum"
+    metric: "affordable_percentage"
+    default_value: 0.25
+    min_value: 0.0
+    max_value: 0.60
+    unit: "percent"
+    enabled: true
+    violation_message: "Affordable percentage < {threshold:.0%}"
+
+  min_affordable_years:
+    id: "min_affordable_years"
+    name: "Minimum Affordability Duration"
+    name_is: "Lágmarkstími hagkvæmni"
+    category: "social"
+    type: "minimum"
+    metric: "restriction_years"
+    default_value: 30
+    min_value: 10
+    max_value: 99
+    unit: "years"
+    enabled: true
+    violation_message: "Affordability restriction < {threshold} years"
+
+  min_rental_pct:
+    id: "min_rental_pct"
+    name: "Minimum Rental Percentage"
+    name_is: "Lágmarkshlutfall leiguíbúða"
+    category: "social"
+    type: "minimum"
+    metric: "rental_percentage"
+    default_value: 0.15
+    min_value: 0.0
+    max_value: 0.50
+    unit: "percent"
+    enabled: true
+    violation_message: "Rental percentage < {threshold:.0%}"
+
+  # QUALITY CONSTRAINTS
+  min_energy_rating:
+    id: "min_energy_rating"
+    name: "Minimum Energy Rating"
+    name_is: "Lágmarks orkueinkunn"
+    category: "quality"
+    type: "categorical"
+    metric: "energy_rating"
+    allowed_values: ["A+", "A"]
+    enabled: true
+    violation_message: "Energy rating not in allowed values"
+
+  # FINANCIAL CONSTRAINTS
+  prob_positive_npv:
+    id: "prob_positive_npv"
+    name: "Probability of Positive NPV"
+    name_is: "Líkur á jákvæðu NPV"
+    category: "financial"
+    type: "probabilistic"
+    metric: "npv"
+    threshold: 0
+    confidence: 0.90
+    enabled: true
+    violation_message: "P(NPV >= 0) < {confidence:.0%}"
+
+  max_loss_cvar:
+    id: "max_loss_cvar"
+    name: "Maximum Worst-Case Loss"
+    name_is: "Hámarks tap í versta falli"
+    category: "financial"
+    type: "cvar"
+    metric: "npv"
+    threshold: -2000
+    alpha: 0.05
+    enabled: true
+    violation_message: "CVaR(5%) < {threshold} M ISK"
+
+# Constraint presets
+presets:
+  minimum:
+    name: "Minimum Requirements"
+    name_is: "Lágmarkskröfur"
+    enabled_constraints:
+      - "prob_positive_npv"
+      - "min_affordable_pct"
+
+  standard:
+    name: "Standard Requirements"
+    name_is: "Venjulegar kröfur"
+    enabled_constraints:
+      - "prob_positive_npv"
+      - "max_loss_cvar"
+      - "min_affordable_pct"
+      - "min_affordable_years"
+      - "min_rental_pct"
+      - "min_energy_rating"
+      - "first_units_deadline"
+      - "school_deadline"
+
+  strict:
+    name: "Strict Requirements"
+    name_is: "Strangar kröfur"
+    enabled_constraints: "all"

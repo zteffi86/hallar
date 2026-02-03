@@ -1,0 +1,108 @@
+# Affordability Model for Hallar DSS
+# Treats affordable housing percentage as a variable for sensitivity analysis
+
+model_description: |
+  Affordability is not a fixed requirement - it's a choice with trade-offs.
+  This model allows politicians to see the impact of different affordability levels.
+
+baseline:
+  reykjavik_typical: 0.15
+  current_policy_target: 0.25
+  hallar_minimum: 0.20
+
+parameters:
+  affordable_percentage:
+    name: "Affordable Housing Percentage"
+    name_is: "Hlutfall hagkvæmra íbúða"
+    min: 0.0
+    max: 0.60
+    default: 0.25
+    step: 0.05
+
+  affordability_depth:
+    name: "Discount from Market"
+    name_is: "Afsláttur frá markaðsverði"
+    min: 0.10
+    max: 0.50
+    default: 0.25
+    step: 0.05
+
+  restriction_duration:
+    name: "Affordability Duration"
+    name_is: "Tímalengd hagkvæmniskröfu"
+    min: 10
+    max: 99
+    default: 30
+    step: 5
+    unit: "years"
+
+  rental_share:
+    name: "Rental Share of Affordable"
+    name_is: "Hlutfall leiguíbúða"
+    min: 0.0
+    max: 1.0
+    default: 0.50
+    step: 0.10
+
+# Impact curves
+impact_curves:
+  npv_impact:
+    description: "NPV reduction by affordable %"
+    curve:
+      - affordable_pct: 0.00
+        npv_multiplier: 1.00
+      - affordable_pct: 0.10
+        npv_multiplier: 0.96
+      - affordable_pct: 0.20
+        npv_multiplier: 0.92
+      - affordable_pct: 0.25
+        npv_multiplier: 0.89
+      - affordable_pct: 0.30
+        npv_multiplier: 0.86
+      - affordable_pct: 0.40
+        npv_multiplier: 0.80
+      - affordable_pct: 0.50
+        npv_multiplier: 0.73
+
+  political_score:
+    description: "Political/social value score (0-100)"
+    curve:
+      - affordable_pct: 0.00
+        score: 0
+      - affordable_pct: 0.10
+        score: 25
+      - affordable_pct: 0.20
+        score: 55
+      - affordable_pct: 0.25
+        score: 70
+      - affordable_pct: 0.30
+        score: 80
+      - affordable_pct: 0.40
+        score: 90
+      - affordable_pct: 0.50
+        score: 95
+      - affordable_pct: 0.60
+        score: 100
+
+# Score calculation
+score_calculation:
+  formula: |
+    score = (
+      percentage_affordable * 40 +
+      discount_depth * 30 +
+      min(restriction_years / 50, 1.0) * 20 +
+      (10 if legally_binding else 0)
+    )
+  maximum_score: 100
+
+# Physical trade-offs
+physical_tradeoffs:
+  unit_size:
+    market_typical: "85-110 sqm"
+    affordable_typical: "65-80 sqm"
+  bedrooms:
+    market_typical: "2-4 bedrooms"
+    affordable_typical: "1-2 bedrooms"
+  parking:
+    market_typical: "1.0-1.5 spaces/unit"
+    affordable_typical: "0.5-0.7 spaces/unit"

@@ -1,0 +1,133 @@
+# Infrastructure Models for Hallar DSS
+# Defines who builds, pays for, and owns infrastructure
+
+total_infrastructure:
+  cost:
+    min: 6000
+    likely: 8000
+    max: 11000
+  maintenance_annual: 200
+
+infrastructure_models:
+  I1:
+    id: "I1"
+    name: "City Builds & Owns"
+    name_is: "Borg byggir og á"
+    description: "City finances, contracts, and owns all infrastructure"
+
+    responsibility:
+      financing: "city"
+      procurement: "city"
+      construction_management: "city"
+      ownership: "city"
+      maintenance: "city"
+
+    city_cash_flow:
+      upfront:
+        amount: -8000
+        unit: "M ISK"
+      ongoing:
+        amount: -200
+        frequency: "annual"
+
+    compatible_with:
+      ownership: ["O1", "O3", "O5", "O8"]
+
+  I2:
+    id: "I2"
+    name: "Developer Builds, Transfers"
+    name_is: "Framkvæmdaraðili byggir, framselur"
+    description: "Developer builds infrastructure, transfers to city"
+
+    responsibility:
+      financing: "developer_embedded"
+      procurement: "developer"
+      construction_management: "developer"
+      ownership: "city_after_transfer"
+      maintenance: "city_after_transfer"
+
+    city_cash_flow:
+      upfront:
+        amount: 0
+      ongoing:
+        amount: -200
+        after: "transfer"
+
+    compatible_with:
+      ownership: ["O2", "O4", "O6"]
+
+  I3:
+    id: "I3"
+    name: "Private Ownership"
+    name_is: "Einkaeign"
+    description: "Developer retains infrastructure ownership"
+
+    responsibility:
+      financing: "developer"
+      ownership: "developer_permanent"
+      maintenance: "developer_or_hoa"
+
+    city_cash_flow:
+      upfront: 0
+      ongoing: 0
+
+    compatible_with:
+      ownership: ["O2", "O4"]
+
+  I4:
+    id: "I4"
+    name: "City Builds, Fee Recovery"
+    name_is: "Borg byggir, gjaldaendurheimta"
+    description: "City finances infrastructure, recoups through fees"
+
+    responsibility:
+      financing: "city_upfront"
+      ownership: "city"
+      maintenance: "city_funded_by_fees"
+
+    city_cash_flow:
+      upfront:
+        amount: -8000
+      fee_recovery:
+        gatnagerdargjald_per_unit: 500000
+        total_recovery: 1600
+
+    compatible_with:
+      ownership: ["O1", "O2", "O3", "O5"]
+
+  I5:
+    id: "I5"
+    name: "Infrastructure Swap"
+    name_is: "Innviðaskipti"
+    description: "Byggingarrétt priced to offset infrastructure cost"
+
+    responsibility:
+      financing: "developer_implicit"
+      ownership: "city_after_transfer"
+      maintenance: "city_after_transfer"
+
+    city_cash_flow:
+      upfront:
+        cash_received: 8000
+        infrastructure_cost: -8000
+        net: 0
+
+    compatible_with:
+      ownership: ["O2", "O6"]
+
+  I6:
+    id: "I6"
+    name: "Pension-Financed"
+    name_is: "Lífeyrissjóðsfjármögnuð"
+    description: "Pension fund finances infrastructure as part of project"
+
+    responsibility:
+      financing: "pension_fund"
+      ownership: "city_or_shared"
+      maintenance: "city"
+
+    city_cash_flow:
+      upfront: 0
+
+    compatible_with:
+      ownership: ["O4", "O5", "O6", "O7"]

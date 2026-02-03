@@ -1,0 +1,229 @@
+# Financing Models for Hallar DSS
+# Defines who provides capital and at what cost
+
+financing_models:
+  F1:
+    id: "F1"
+    name: "City-Financed"
+    name_is: "Borgarfjármögnun"
+    description: "City finances 100% of development from budget and bonds"
+
+    capital_structure:
+      equity:
+        provider: "Reykjavíkurborg"
+        share: 0.30
+        cost: 0.03
+      debt:
+        provider: "Municipal bonds / Lánasjóður sveitarfélaga"
+        share: 0.70
+        rate:
+          min: 0.04
+          likely: 0.05
+          max: 0.07
+
+    total_cost_of_capital:
+      min: 0.035
+      likely: 0.045
+      max: 0.055
+
+    city_cash_impact:
+      upfront: "Full project cost (~25,000M ISK)"
+      timing: "Spread over construction period"
+      ongoing: "Debt service + maintenance"
+
+    compatible_with:
+      ownership: ["O1"]
+
+  F2:
+    id: "F2"
+    name: "Developer-Financed"
+    name_is: "Framkvæmdaraðilafjármögnun"
+    description: "Developer arranges all financing from equity and bank loans"
+
+    capital_structure:
+      equity:
+        provider: "Developer"
+        share: 0.25
+        cost: 0.15
+      debt:
+        provider: "Commercial banks"
+        share: 0.75
+        rate:
+          min: 0.07
+          likely: 0.09
+          max: 0.12
+
+    total_cost_of_capital:
+      min: 0.09
+      likely: 0.11
+      max: 0.13
+
+    compatible_with:
+      ownership: ["O2"]
+
+  F3:
+    id: "F3"
+    name: "Pension Equity"
+    name_is: "Lífeyrissjóður eiginfjárfjármögnun"
+    description: "Pension fund provides 100% equity financing"
+
+    capital_structure:
+      equity:
+        provider: "Lífeyrissjóður"
+        share: 1.0
+        cost: 0.05
+
+    total_cost_of_capital:
+      value: 0.05
+      note: "Much lower than developer financing"
+
+    compatible_with:
+      ownership: ["O4"]
+
+  F4:
+    id: "F4"
+    name: "Pension Debt"
+    name_is: "Lífeyrissjóðslán"
+    description: "Pension fund provides debt financing to developer or FB"
+
+    capital_structure:
+      equity:
+        provider: "Developer or Félagsbústaðir"
+        share: 0.20
+        cost: 0.12
+      debt:
+        provider: "Lífeyrissjóður"
+        share: 0.80
+        rate:
+          min: 0.04
+          likely: 0.05
+          max: 0.06
+
+    total_cost_of_capital:
+      min: 0.055
+      likely: 0.065
+      max: 0.075
+
+    compatible_with:
+      ownership: ["O2", "O6", "O8"]
+
+  F5:
+    id: "F5"
+    name: "Mixed Pension-Developer"
+    name_is: "Blandað lífeyrissjóður-framkvæmdaraðili"
+    description: "Pension equity + developer equity + debt financing"
+
+    capital_structure:
+      equity:
+        - provider: "Lífeyrissjóður"
+          share: 0.35
+          cost: 0.05
+        - provider: "Developer"
+          share: 0.15
+          cost: 0.15
+      debt:
+        provider: "Banks or pension fund"
+        share: 0.50
+        rate:
+          min: 0.05
+          likely: 0.07
+          max: 0.09
+
+    total_cost_of_capital:
+      min: 0.065
+      likely: 0.075
+      max: 0.09
+
+    compatible_with:
+      ownership: ["O6", "O7"]
+
+  F6:
+    id: "F6"
+    name: "City Equity JV"
+    name_is: "Eiginfjárframlag borgar í samstarfi"
+    description: "City contributes cash equity to joint venture"
+
+    capital_structure:
+      equity:
+        - provider: "Reykjavíkurborg"
+          share: 0.20
+          cost: 0.03
+        - provider: "Partner"
+          share: 0.30
+          cost: 0.10
+      debt:
+        provider: "Banks or pension"
+        share: 0.50
+        rate:
+          min: 0.05
+          likely: 0.07
+          max: 0.09
+
+    total_cost_of_capital:
+      min: 0.055
+      likely: 0.07
+      max: 0.085
+
+    compatible_with:
+      ownership: ["O3"]
+
+  F7:
+    id: "F7"
+    name: "City Land-as-Equity"
+    name_is: "Borgarland sem eiginfjárframlag"
+    description: "City contributes byggingarrétt as equity instead of cash"
+
+    capital_structure:
+      equity:
+        - provider: "Reykjavíkurborg (land)"
+          share: 0.30
+          cost: 0.03
+        - provider: "Lífeyrissjóður (cash)"
+          share: 0.40
+          cost: 0.05
+      debt:
+        provider: "Pension or bank"
+        share: 0.30
+        rate:
+          min: 0.05
+          likely: 0.06
+          max: 0.07
+
+    total_cost_of_capital:
+      min: 0.045
+      likely: 0.05
+      max: 0.06
+
+    city_cash_impact:
+      upfront: "Zero cash required"
+      returns: "Pro-rata share of profits"
+
+    compatible_with:
+      ownership: ["O5", "O7"]
+
+  F8:
+    id: "F8"
+    name: "City-Guaranteed Bonds"
+    name_is: "Skuldabréf með borgarábyrgð"
+    description: "Bonds issued with city guarantee"
+
+    capital_structure:
+      equity:
+        provider: "Félagsbústaðir or partner"
+        share: 0.20
+        cost: 0.08
+      debt:
+        provider: "Bond market with city guarantee"
+        share: 0.80
+        rate:
+          min: 0.045
+          likely: 0.055
+          max: 0.065
+
+    total_cost_of_capital:
+      min: 0.055
+      likely: 0.065
+      max: 0.075
+
+    compatible_with:
+      ownership: ["O2", "O3", "O8"]
