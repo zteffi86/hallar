@@ -1,0 +1,49 @@
+# Constraint Definitions for Hallar DSS
+# Hard constraints that scenarios must pass to be considered viable
+
+constraints:
+  financial:
+    name: "City must not lose money"
+    type: "probabilistic"
+    metric: "npv"
+    threshold: 0
+    confidence: 0.90
+
+  max_loss:
+    name: "Worst-case loss limit"
+    type: "cvar"
+    metric: "npv"
+    alpha: 0.05
+    threshold: -2000
+
+  school_timing:
+    name: "School must be operational"
+    type: "deadline"
+    metric: "first_school_months"
+    threshold: 60
+    confidence: 0.80
+
+  affordability_minimum:
+    name: "Minimum affordable housing"
+    type: "minimum"
+    metric: "affordable_percentage"
+    threshold: 0.25
+
+  affordability_duration:
+    name: "Affordability restrictions must last"
+    type: "minimum"
+    metric: "restriction_years"
+    threshold: 30
+
+  rental_minimum:
+    name: "Minimum rental housing"
+    type: "minimum"
+    metric: "rental_percentage"
+    threshold: 0.15
+
+  energy_rating:
+    name: "Minimum energy performance"
+    type: "categorical"
+    metric: "energy_rating"
+    threshold: "A"
+    allowed_values: ["A+", "A"]

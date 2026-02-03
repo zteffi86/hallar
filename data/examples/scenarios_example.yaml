@@ -1,0 +1,466 @@
+# Example Scenario Definitions for Hallar DSS
+# All monetary values in ISK millions
+# All times in months
+
+scenarios:
+  S0:
+    name: "Baseline - City sells rights, builds infrastructure"
+    description: "City sells development rights at market, builds infrastructure via traditional procurement"
+
+    infrastructure_cost:
+      min: 8000
+      likely: 12000
+      max: 20000
+
+    rights_revenue:
+      min: 15000
+      likely: 18000
+      max: 22000
+
+    timeline:
+      first_units:
+        min: 36
+        likely: 48
+        max: 72
+      first_school:
+        min: 48
+        likely: 60
+        max: 84
+      sixty_percent_complete:
+        min: 72
+        likely: 96
+        max: 144
+
+    risks:
+      cost_overrun_probability: 0.6
+      cost_overrun_multiplier:
+        min: 1.0
+        likely: 1.15
+        max: 1.5
+      developer_default_probability: 0.0
+      delay_probability: 0.4
+      delay_months:
+        min: 0
+        likely: 6
+        max: 24
+
+    affordability:
+      percentage_affordable: 0.0
+      price_discount: 0.0
+      restriction_years: 0
+      legally_binding: false
+
+    quality:
+      energy_rating: "B"
+      defect_rate:
+        min: 0.02
+        likely: 0.05
+        max: 0.10
+
+    city_control: 1.0
+    step_in_cost_fraction: 0.0
+
+  S1:
+    name: "Milestone-vesting PPP"
+    description: "Rights vest in tranches tied to infrastructure delivery milestones"
+
+    infrastructure_cost:
+      min: 7000
+      likely: 10000
+      max: 15000
+
+    rights_revenue:
+      min: 14000
+      likely: 17000
+      max: 21000
+
+    timeline:
+      first_units:
+        min: 30
+        likely: 42
+        max: 60
+      first_school:
+        min: 42
+        likely: 54
+        max: 72
+      sixty_percent_complete:
+        min: 60
+        likely: 84
+        max: 120
+
+    risks:
+      cost_overrun_probability: 0.4
+      cost_overrun_multiplier:
+        min: 1.0
+        likely: 1.10
+        max: 1.35
+      developer_default_probability: 0.05
+      delay_probability: 0.3
+      delay_months:
+        min: 0
+        likely: 4
+        max: 18
+
+    affordability:
+      percentage_affordable: 0.25
+      price_discount: 0.15
+      restriction_years: 30
+      legally_binding: true
+
+    quality:
+      energy_rating: "A"
+      defect_rate:
+        min: 0.01
+        likely: 0.03
+        max: 0.07
+
+    city_control: 0.7
+    step_in_cost_fraction: 0.25
+
+  S2:
+    name: "Master Developer Agreement"
+    description: "Single master developer takes full responsibility for infrastructure and housing"
+
+    infrastructure_cost:
+      min: 6000
+      likely: 9000
+      max: 14000
+
+    rights_revenue:
+      min: 12000
+      likely: 15000
+      max: 19000
+
+    timeline:
+      first_units:
+        min: 24
+        likely: 36
+        max: 54
+      first_school:
+        min: 36
+        likely: 48
+        max: 66
+      sixty_percent_complete:
+        min: 48
+        likely: 72
+        max: 108
+
+    risks:
+      cost_overrun_probability: 0.3
+      cost_overrun_multiplier:
+        min: 1.0
+        likely: 1.08
+        max: 1.25
+      developer_default_probability: 0.15
+      delay_probability: 0.25
+      delay_months:
+        min: 0
+        likely: 3
+        max: 12
+
+    affordability:
+      percentage_affordable: 0.20
+      price_discount: 0.10
+      restriction_years: 25
+      legally_binding: true
+
+    quality:
+      energy_rating: "A"
+      defect_rate:
+        min: 0.01
+        likely: 0.025
+        max: 0.05
+
+    city_control: 0.4
+    step_in_cost_fraction: 0.35
+
+  S3:
+    name: "Phased Development Rights"
+    description: "Development rights released in phases based on demand and completion"
+
+    infrastructure_cost:
+      min: 8500
+      likely: 11500
+      max: 17000
+
+    rights_revenue:
+      min: 16000
+      likely: 19000
+      max: 23000
+
+    timeline:
+      first_units:
+        min: 36
+        likely: 45
+        max: 66
+      first_school:
+        min: 48
+        likely: 58
+        max: 78
+      sixty_percent_complete:
+        min: 66
+        likely: 90
+        max: 132
+
+    risks:
+      cost_overrun_probability: 0.5
+      cost_overrun_multiplier:
+        min: 1.0
+        likely: 1.12
+        max: 1.4
+      developer_default_probability: 0.08
+      delay_probability: 0.35
+      delay_months:
+        min: 0
+        likely: 5
+        max: 20
+
+    affordability:
+      percentage_affordable: 0.30
+      price_discount: 0.18
+      restriction_years: 35
+      legally_binding: true
+
+    quality:
+      energy_rating: "A"
+      defect_rate:
+        min: 0.015
+        likely: 0.035
+        max: 0.08
+
+    city_control: 0.8
+    step_in_cost_fraction: 0.20
+
+  S4:
+    name: "Community Land Trust"
+    description: "Land held in trust with long-term affordability guarantees"
+
+    infrastructure_cost:
+      min: 9000
+      likely: 13000
+      max: 19000
+
+    rights_revenue:
+      min: 10000
+      likely: 13000
+      max: 16000
+
+    timeline:
+      first_units:
+        min: 42
+        likely: 54
+        max: 78
+      first_school:
+        min: 54
+        likely: 66
+        max: 90
+      sixty_percent_complete:
+        min: 78
+        likely: 108
+        max: 156
+
+    risks:
+      cost_overrun_probability: 0.55
+      cost_overrun_multiplier:
+        min: 1.0
+        likely: 1.13
+        max: 1.45
+      developer_default_probability: 0.03
+      delay_probability: 0.45
+      delay_months:
+        min: 0
+        likely: 8
+        max: 30
+
+    affordability:
+      percentage_affordable: 0.50
+      price_discount: 0.25
+      restriction_years: 99
+      legally_binding: true
+
+    quality:
+      energy_rating: "A"
+      defect_rate:
+        min: 0.02
+        likely: 0.04
+        max: 0.08
+
+    city_control: 0.9
+    step_in_cost_fraction: 0.15
+
+  S5:
+    name: "Rights-for-Financing PPP"
+    description: "Developer finances infrastructure in exchange for development rights"
+
+    infrastructure_cost:
+      min: 5000
+      likely: 8000
+      max: 12000
+
+    rights_revenue:
+      min: 8000
+      likely: 11000
+      max: 14000
+
+    timeline:
+      first_units:
+        min: 28
+        likely: 38
+        max: 54
+      first_school:
+        min: 38
+        likely: 50
+        max: 68
+      sixty_percent_complete:
+        min: 52
+        likely: 76
+        max: 114
+
+    risks:
+      cost_overrun_probability: 0.35
+      cost_overrun_multiplier:
+        min: 1.0
+        likely: 1.08
+        max: 1.28
+      developer_default_probability: 0.12
+      delay_probability: 0.28
+      delay_months:
+        min: 0
+        likely: 4
+        max: 16
+
+    affordability:
+      percentage_affordable: 0.18
+      price_discount: 0.12
+      restriction_years: 20
+      legally_binding: true
+
+    quality:
+      energy_rating: "A"
+      defect_rate:
+        min: 0.015
+        likely: 0.03
+        max: 0.06
+
+    city_control: 0.5
+    step_in_cost_fraction: 0.30
+
+  S6:
+    name: "Build-Operate-Transfer (BOT)"
+    description: "Developer builds and operates for period before transfer to city"
+
+    infrastructure_cost:
+      min: 6500
+      likely: 9500
+      max: 14000
+
+    rights_revenue:
+      min: 13000
+      likely: 16000
+      max: 20000
+
+    timeline:
+      first_units:
+        min: 32
+        likely: 44
+        max: 62
+      first_school:
+        min: 44
+        likely: 56
+        max: 76
+      sixty_percent_complete:
+        min: 58
+        likely: 82
+        max: 122
+
+    risks:
+      cost_overrun_probability: 0.38
+      cost_overrun_multiplier:
+        min: 1.0
+        likely: 1.09
+        max: 1.32
+      developer_default_probability: 0.10
+      delay_probability: 0.32
+      delay_months:
+        min: 0
+        likely: 5
+        max: 18
+
+    affordability:
+      percentage_affordable: 0.22
+      price_discount: 0.14
+      restriction_years: 28
+      legally_binding: true
+
+    quality:
+      energy_rating: "A"
+      defect_rate:
+        min: 0.01
+        likely: 0.028
+        max: 0.055
+
+    city_control: 0.6
+    step_in_cost_fraction: 0.28
+
+  S7:
+    name: "Joint Venture"
+    description: "City and private partners form JV company, share risks and returns"
+
+    infrastructure_cost:
+      min: 7500
+      likely: 10500
+      max: 15500
+
+    rights_revenue:
+      min: 14500
+      likely: 17500
+      max: 21500
+
+    timeline:
+      first_units:
+        min: 34
+        likely: 46
+        max: 64
+      first_school:
+        min: 46
+        likely: 58
+        max: 78
+      sixty_percent_complete:
+        min: 64
+        likely: 88
+        max: 128
+
+    risks:
+      cost_overrun_probability: 0.45
+      cost_overrun_multiplier:
+        min: 1.0
+        likely: 1.11
+        max: 1.38
+      developer_default_probability: 0.06
+      delay_probability: 0.35
+      delay_months:
+        min: 0
+        likely: 5
+        max: 20
+
+    affordability:
+      percentage_affordable: 0.28
+      price_discount: 0.16
+      restriction_years: 32
+      legally_binding: true
+
+    quality:
+      energy_rating: "A"
+      defect_rate:
+        min: 0.012
+        likely: 0.032
+        max: 0.065
+
+    city_control: 0.65
+    step_in_cost_fraction: 0.22
+
+    jv_parameters:
+      city_equity_share: 0.40
+      profit_share: 0.40
+      loss_share: 0.40
+      management_fee_annual: 50

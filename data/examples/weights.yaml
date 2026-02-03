@@ -1,0 +1,52 @@
+# Weight Profile Definitions for Hallar DSS
+# These define different political/strategic priorities for scenario evaluation
+# Weights are automatically normalized to sum to 1.0
+
+weight_scenarios:
+  P1:
+    name: "Balanced"
+    weights:
+      speed: 0.30
+      affordability: 0.30
+      quality: 0.30
+      financial: 0.10
+
+  P2:
+    name: "Housing Crisis Response"
+    weights:
+      speed: 0.25
+      affordability: 0.40
+      quality: 0.20
+      financial: 0.15
+
+  P3:
+    name: "Speed Priority"
+    weights:
+      speed: 0.45
+      affordability: 0.20
+      quality: 0.20
+      financial: 0.15
+
+  P4:
+    name: "Quality Priority"
+    weights:
+      speed: 0.20
+      affordability: 0.20
+      quality: 0.45
+      financial: 0.15
+
+  P5:
+    name: "Financial Prudence"
+    weights:
+      speed: 0.20
+      affordability: 0.20
+      quality: 0.20
+      financial: 0.40
+
+  P6:
+    name: "Social Focus"
+    weights:
+      speed: 0.15
+      affordability: 0.50
+      quality: 0.25
+      financial: 0.10

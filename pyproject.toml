@@ -1,0 +1,56 @@
+[project]
+name = "hallar-dss"
+version = "0.1.0"
+description = "Quantitative decision support system for comparing land development scenarios"
+readme = "README.md"
+requires-python = ">=3.10"
+license = {text = "MIT"}
+authors = [
+    {name = "Hallar Team"}
+]
+keywords = ["decision-support", "monte-carlo", "land-development", "npv", "simulation"]
+
+dependencies = [
+    "numpy>=1.24",
+    "pandas>=2.0",
+    "scipy>=1.10",
+    "pyyaml>=6.0",
+    "pydantic>=2.0",
+    "plotly>=5.0",
+    "matplotlib>=3.7",
+    "openpyxl>=3.1",
+    "reportlab>=4.0",
+    "streamlit>=1.30",
+    "click>=8.0",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=7.0",
+    "pytest-cov>=4.0",
+    "black>=23.0",
+    "ruff>=0.1",
+]
+
+[project.scripts]
+hallar = "hallar.cli:main"
+
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+python_files = ["test_*.py"]
+python_functions = ["test_*"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py310"
+
+[tool.black]
+line-length = 100
+target-version = ["py310"]
