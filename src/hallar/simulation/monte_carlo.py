@@ -21,8 +21,9 @@ from hallar.simulation.utility import (
 
 @dataclass
 class SimulationResults:
-    """Results from a single scenario simulation."""
+    """Results from a single scenario simulation - EXTENDED for ComposedScenario support."""
 
+    # Core fields (existing)
     npv: np.ndarray
     first_units_months: np.ndarray
     first_school_months: np.ndarray
@@ -33,8 +34,68 @@ class SimulationResults:
     affordability_score: np.ndarray
     developer_defaulted: np.ndarray
 
-    def to_dict(self) -> Dict[str, np.ndarray]:
-        """Convert to dictionary of arrays."""
+    # Extended fields for ComposedScenario/6-goal support
+    affordable_percentage: np.ndarray = field(default_factory=lambda: np.array([]))
+    defect_rate: np.ndarray = field(default_factory=lambda: np.array([]))
+    city_control: np.ndarray = field(default_factory=lambda: np.array([]))
+    risk_score: np.ndarray = field(default_factory=lambda: np.array([]))
+    control_score: np.ndarray = field(default_factory=lambda: np.array([]))
+
+    @property
+    def prob_negative(self) -> float:
+        """Probability of negative NPV."""
+        if len(self.npv) == 0:
+            return 0.0
+        return float(np.mean(self.npv < 0))
+
+    @property
+    def prob_loss(self) -> float:
+        """Alias for prob_negative."""
+        return self.prob_negative
+
+    @property
+    def cvar_05(self) -> float:
+        """Conditional Value at Risk at 5% level."""
+        if len(self.npv) == 0:
+            return 0.0
+        threshold = np.percentile(self.npv, 5)
+        tail = self.npv[self.npv <= threshold]
+        return float(np.mean(tail)) if len(tail) > 0 else float(threshold)
+
+    @property
+    def expected_npv(self) -> float:
+        """Expected (mean) NPV."""
+        return float(np.mean(self.npv)) if len(self.npv) > 0 else 0.0
+
+    @property
+    def npv_std(self) -> float:
+        """Standard deviation of NPV."""
+        return float(np.std(self.npv)) if len(self.npv) > 0 else 0.0
+
+    @property
+    def expected_time(self) -> float:
+        """Expected time to first units."""
+        return float(np.mean(self.first_units_months)) if len(self.first_units_months) > 0 else 0.0
+
+    def to_dict(self) -> Dict[str, Any]:
+        """Convert to dictionary for serialization."""
+        return {
+            "expected_npv": self.expected_npv,
+            "npv_std": self.npv_std,
+            "npv_p10": float(np.percentile(self.npv, 10)) if len(self.npv) > 0 else 0,
+            "npv_p90": float(np.percentile(self.npv, 90)) if len(self.npv) > 0 else 0,
+            "cvar_05": self.cvar_05,
+            "prob_loss": self.prob_loss,
+            "expected_time": self.expected_time,
+            "quality_score": float(np.mean(self.quality_score)) if len(self.quality_score) > 0 else 0,
+            "affordability_score": float(np.mean(self.affordability_score)) if len(self.affordability_score) > 0 else 0,
+            "affordable_percentage": float(np.mean(self.affordable_percentage)) if len(self.affordable_percentage) > 0 else 0,
+            "city_control": float(np.mean(self.city_control)) if len(self.city_control) > 0 else 0,
+            "risk_score": float(np.mean(self.risk_score)) if len(self.risk_score) > 0 else 0,
+        }
+
+    def to_arrays_dict(self) -> Dict[str, np.ndarray]:
+        """Convert to dictionary of arrays (legacy format)."""
         return {
             "npv": self.npv,
             "first_units_months": self.first_units_months,

@@ -229,17 +229,35 @@ def get_metric_from_simulation(
     Returns:
         Array of values or None if not found
     """
+    # Use getattr with defaults for optional fields
+    affordable_pct = getattr(results, 'affordable_percentage', np.array([]))
+    defect = getattr(results, 'defect_rate', np.array([]))
+    control = getattr(results, 'city_control', np.array([]))
+
     metric_map = {
         "npv": results.npv,
         "first_units_months": results.first_units_months,
         "sixty_percent_months": results.sixty_percent_months,
-        "affordable_percentage": results.affordable_percentage,
-        "defect_rate": results.defect_rate,
-        "city_control": results.city_control,
-        "prob_negative": np.array([results.prob_negative] * len(results.npv)),
-        "cvar_05": np.array([results.cvar_05] * len(results.npv)),
+        "affordable_percentage": affordable_pct if len(affordable_pct) > 0 else None,
+        "defect_rate": defect if len(defect) > 0 else None,
+        "city_control": control if len(control) > 0 else None,
+        "quality_score": results.quality_score,
+        "affordability_score": results.affordability_score,
     }
-    return metric_map.get(metric)
+
+    # Add computed properties as arrays if available
+    if len(results.npv) > 0:
+        prob_neg = getattr(results, 'prob_negative', None)
+        if prob_neg is not None:
+            metric_map["prob_negative"] = np.array([prob_neg] * len(results.npv))
+        cvar = getattr(results, 'cvar_05', None)
+        if cvar is not None:
+            metric_map["cvar_05"] = np.array([cvar] * len(results.npv))
+
+    result = metric_map.get(metric)
+    if result is not None and hasattr(result, '__len__') and len(result) == 0:
+        return None
+    return result
 
 
 def check_scenario_constraints(

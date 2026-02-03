@@ -72,28 +72,49 @@ def compute_goal_metrics_from_simulation(
     Returns:
         Tuple of (raw_value, normalized_score)
     """
-    # Map goal IDs to simulation metrics
+    # Map goal IDs to simulation metrics with defensive handling for optional fields
     if goal_id == "G1":  # Speed
-        raw_value = np.mean(results.first_units_months)
+        raw_value = float(np.mean(results.first_units_months)) if len(results.first_units_months) > 0 else 36.0
         # Normalize: 24 months best, 48 months worst
         normalized = normalize_score(raw_value, 24, 48, direction)
     elif goal_id == "G2":  # Affordability
-        raw_value = np.mean(results.affordable_percentage) * 100
+        # Handle optional affordable_percentage - fallback to affordability_score
+        affordable = getattr(results, 'affordable_percentage', np.array([]))
+        if len(affordable) > 0:
+            raw_value = float(np.mean(affordable)) * 100
+        else:
+            raw_value = float(np.mean(results.affordability_score)) if len(results.affordability_score) > 0 else 50.0
         # Already 0-100 scale
         normalized = raw_value if direction == "maximize" else 100 - raw_value
     elif goal_id == "G3":  # Quality
-        raw_value = 100 - np.mean(results.defect_rate) * 100
+        # Handle optional defect_rate - fallback to quality_score
+        defect = getattr(results, 'defect_rate', np.array([]))
+        if len(defect) > 0:
+            raw_value = 100 - float(np.mean(defect)) * 100
+        else:
+            raw_value = float(np.mean(results.quality_score)) if len(results.quality_score) > 0 else 50.0
         normalized = raw_value if direction == "maximize" else 100 - raw_value
     elif goal_id == "G4":  # Financial
-        raw_value = np.mean(results.npv)
+        raw_value = float(np.mean(results.npv)) if len(results.npv) > 0 else 0.0
         # Normalize: -2000 to 10000 M ISK range
         normalized = normalize_score(raw_value, -2000, 10000, direction)
     elif goal_id == "G5":  # Risk
-        raw_value = results.prob_negative * 100
+        # Use prob_negative property if available
+        prob_neg = getattr(results, 'prob_negative', None)
+        if prob_neg is not None:
+            raw_value = prob_neg * 100
+        elif len(results.npv) > 0:
+            raw_value = float(np.mean(results.npv < 0)) * 100
+        else:
+            raw_value = 10.0
         # Risk is probability of loss - lower is better
         normalized = normalize_score(raw_value, 0, 50, "minimize")
     elif goal_id == "G6":  # Control
-        raw_value = np.mean(results.city_control) * 100
+        control = getattr(results, 'city_control', np.array([]))
+        if len(control) > 0:
+            raw_value = float(np.mean(control)) * 100
+        else:
+            raw_value = 50.0
         normalized = raw_value if direction == "maximize" else 100 - raw_value
     else:
         raw_value = 50.0
