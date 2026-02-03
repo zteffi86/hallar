@@ -1,0 +1,238 @@
+# Risk Catalog for Hallar DSS
+# Comprehensive list of risks that can affect the project
+
+risk_categories:
+  construction:
+    name: "Construction Risks"
+    name_is: "Byggingaráhætta"
+    color: "#E74C3C"
+  counterparty:
+    name: "Counterparty Risks"
+    name_is: "Mótaðilaáhætta"
+    color: "#9B59B6"
+  market:
+    name: "Market Risks"
+    name_is: "Markaðsáhætta"
+    color: "#3498DB"
+  regulatory:
+    name: "Regulatory Risks"
+    name_is: "Reglugerðaráhætta"
+    color: "#F39C12"
+  political:
+    name: "Political Risks"
+    name_is: "Pólitísk áhætta"
+    color: "#1ABC9C"
+  execution:
+    name: "Execution Risks"
+    name_is: "Framkvæmdaáhætta"
+    color: "#E67E22"
+
+risks:
+  R01:
+    id: "R01"
+    name: "Cost Overrun"
+    name_is: "Kostnaðarframúrkeyrsla"
+    category: "construction"
+    description: "Construction costs exceed budget"
+    quantification:
+      impact_type: "cost_multiplier"
+      impact_range:
+        min: 1.00
+        likely: 1.10
+        max: 1.50
+      base_probability: 0.40
+
+  R02:
+    id: "R02"
+    name: "Schedule Delay"
+    name_is: "Töf á áætlun"
+    category: "construction"
+    description: "Project completion later than planned"
+    quantification:
+      impact_type: "months_added"
+      impact_range:
+        min: 0
+        likely: 6
+        max: 24
+      base_probability: 0.35
+
+  R03:
+    id: "R03"
+    name: "Developer Default"
+    name_is: "Greiðslufall framkvæmdaraðila"
+    category: "counterparty"
+    description: "Developer goes bankrupt mid-project"
+    quantification:
+      impact_type: "compound"
+      cost_impact:
+        min: 0.10
+        likely: 0.20
+        max: 0.40
+      delay_impact:
+        min: 12
+        likely: 18
+        max: 30
+      base_probability:
+        small_developer: 0.15
+        medium_developer: 0.10
+        large_developer: 0.06
+        pension_backed: 0.02
+
+  R04:
+    id: "R04"
+    name: "Contractor Dispute"
+    name_is: "Deilur við verktaka"
+    category: "counterparty"
+    description: "Legal or contractual disputes with contractors"
+    quantification:
+      impact_type: "months_added"
+      impact_range:
+        min: 3
+        likely: 9
+        max: 24
+      base_probability: 0.20
+
+  R05:
+    id: "R05"
+    name: "Property Price Decline"
+    name_is: "Lækkun fasteignaverðs"
+    category: "market"
+    description: "Property values fall during or after construction"
+    quantification:
+      impact_type: "revenue_multiplier"
+      impact_range:
+        min: 0.70
+        likely: 0.95
+        max: 1.00
+      base_probability: 0.25
+
+  R06:
+    id: "R06"
+    name: "Interest Rate Increase"
+    name_is: "Vaxtahækkun"
+    category: "market"
+    description: "Financing costs rise during project"
+    quantification:
+      impact_type: "rate_change"
+      impact_range:
+        min: 0.00
+        likely: 0.02
+        max: 0.05
+      base_probability: 0.30
+
+  R07:
+    id: "R07"
+    name: "Demand Slowdown"
+    name_is: "Hægari eftirspurn"
+    category: "market"
+    description: "Units take longer to sell than expected"
+    quantification:
+      impact_type: "months_added"
+      impact_range:
+        min: 0
+        likely: 6
+        max: 18
+      base_probability: 0.20
+
+  R08:
+    id: "R08"
+    name: "Permit Delays"
+    name_is: "Töf á leyfisveitingu"
+    category: "regulatory"
+    description: "Regulatory approvals take longer than expected"
+    quantification:
+      impact_type: "months_added"
+      impact_range:
+        min: 0
+        likely: 4
+        max: 12
+      base_probability: 0.35
+
+  R09:
+    id: "R09"
+    name: "Regulatory Changes"
+    name_is: "Breytingar á reglum"
+    category: "regulatory"
+    description: "New regulations imposed during project"
+    quantification:
+      impact_type: "cost_multiplier"
+      impact_range:
+        min: 1.00
+        likely: 1.05
+        max: 1.15
+      base_probability: 0.15
+
+  R10:
+    id: "R10"
+    name: "Policy Reversal"
+    name_is: "Stefnubreyting"
+    category: "political"
+    description: "New council changes project direction"
+    quantification:
+      impact_type: "qualitative"
+      severity: "high"
+      base_probability: 0.10
+
+  R11:
+    id: "R11"
+    name: "Public Opposition"
+    name_is: "Andstaða almennings"
+    category: "political"
+    description: "Community resistance to project"
+    quantification:
+      impact_type: "months_added"
+      impact_range:
+        min: 0
+        likely: 6
+        max: 18
+      base_probability: 0.25
+
+  R12:
+    id: "R12"
+    name: "Quality Defects"
+    name_is: "Gæðagallar"
+    category: "execution"
+    description: "Construction quality problems discovered"
+    quantification:
+      impact_type: "defect_rate"
+      impact_range:
+        min: 0.01
+        likely: 0.03
+        max: 0.10
+      base_probability: 0.30
+
+  R13:
+    id: "R13"
+    name: "Coordination Failure"
+    name_is: "Samræmingarbrestur"
+    category: "execution"
+    description: "Multi-party coordination breaks down"
+    quantification:
+      impact_type: "months_added"
+      impact_range:
+        min: 0
+        likely: 6
+        max: 12
+      base_probability: 0.20
+
+risk_levels:
+  VERY_LOW:
+    probability_max: 0.02
+    label: "Very Low"
+    color: "#27AE60"
+  LOW:
+    probability_range: [0.02, 0.10]
+    label: "Low"
+    color: "#2ECC71"
+  MEDIUM:
+    probability_range: [0.10, 0.25]
+    label: "Medium"
+    color: "#F39C12"
+  HIGH:
+    probability_range: [0.25, 0.50]
+    label: "High"
+    color: "#E67E22"
+  VERY_HIGH:
+    probability_min: 0.50
+    label: "Very High"
+    color: "#E74C3C"

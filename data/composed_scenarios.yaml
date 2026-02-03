@@ -1,0 +1,278 @@
+# Composed Scenarios for Hallar DSS
+# Valid combinations of ownership, financing, byggingarrétt, and infrastructure
+
+description: |
+  Each composed scenario is a valid combination of:
+  - Ownership structure (O1-O8)
+  - Financing model (F1-F8)
+  - Byggingarrétt disposition (B1-B6)
+  - Infrastructure model (I1-I6)
+
+composed_scenarios:
+  S01:
+    id: "S01"
+    name: "City Direct Development"
+    name_is: "Bein framkvæmd borgar"
+    description: "City develops the entire project directly"
+    components:
+      ownership: "O1"
+      financing: "F1"
+      byggingarrettur: "N/A"
+      infrastructure: "I1"
+    counterparty: "city"
+    default_probability: 0.0
+    city_control_score: 100
+    goal_scores:
+      speed: 30
+      affordability: 90
+      quality: 85
+      financial: 25
+      risk: 20
+      control: 100
+
+  S02:
+    id: "S02"
+    name: "Market Sale to Developer"
+    name_is: "Markaðssala til framkvæmdaraðila"
+    description: "Sell byggingarrétt at market price to private developer"
+    components:
+      ownership: "O2"
+      financing: "F2"
+      byggingarrettur: "B1"
+      infrastructure: "I2"
+    counterparty: "developer_large"
+    default_probability:
+      min: 0.05
+      likely: 0.08
+      max: 0.12
+    city_control_score: 10
+    goal_scores:
+      speed: 85
+      affordability: 35
+      quality: 55
+      financial: 80
+      risk: 50
+      control: 10
+
+  S03:
+    id: "S03"
+    name: "Discounted Sale + Affordability"
+    name_is: "Afsláttarsala + hagkvæmni"
+    description: "Sell byggingarrétt at discount for affordability commitments"
+    components:
+      ownership: "O2"
+      financing: "F2"
+      byggingarrettur: "B2"
+      infrastructure: "I5"
+    counterparty: "developer_large"
+    default_probability:
+      min: 0.05
+      likely: 0.08
+      max: 0.12
+    city_control_score: 15
+    affordability_commitment:
+      minimum_pct: 0.30
+      discount_depth: 0.25
+      restriction_years: 30
+    goal_scores:
+      speed: 75
+      affordability: 70
+      quality: 55
+      financial: 50
+      risk: 45
+      control: 15
+
+  S04:
+    id: "S04"
+    name: "Pension Fund Direct"
+    name_is: "Lífeyrissjóður beint"
+    description: "Sell to pension fund who develops long-term"
+    components:
+      ownership: "O4"
+      financing: "F3"
+      byggingarrettur: "B1"
+      infrastructure: "I6"
+    counterparty: "pension_fund_direct"
+    default_probability:
+      min: 0.001
+      likely: 0.005
+      max: 0.01
+    city_control_score: 10
+    goal_scores:
+      speed: 70
+      affordability: 50
+      quality: 70
+      financial: 85
+      risk: 90
+      control: 10
+
+  S05:
+    id: "S05"
+    name: "Pension-City Joint Venture"
+    name_is: "Lífeyrissjóður-Borg samstarf"
+    description: "City contributes land as equity, pension provides cash"
+    components:
+      ownership: "O5"
+      financing: "F7"
+      byggingarrettur: "B3"
+      infrastructure: "I6"
+    counterparty: "pension_fund_partner"
+    default_probability:
+      min: 0.005
+      likely: 0.01
+      max: 0.02
+    city_control_score: 45
+    equity_structure:
+      city_share: 0.40
+      pension_share: 0.60
+    goal_scores:
+      speed: 65
+      affordability: 75
+      quality: 75
+      financial: 60
+      risk: 80
+      control: 45
+
+  S06:
+    id: "S06"
+    name: "Pension-Developer Partnership"
+    name_is: "Lífeyrissjóður-Framkvæmdaraðili"
+    description: "Pension provides capital, developer executes"
+    components:
+      ownership: "O6"
+      financing: "F5"
+      byggingarrettur: "B1"
+      infrastructure: "I2"
+    counterparty: "pension_backed_developer"
+    default_probability:
+      min: 0.02
+      likely: 0.04
+      max: 0.06
+    city_control_score: 5
+    goal_scores:
+      speed: 80
+      affordability: 45
+      quality: 65
+      financial: 80
+      risk: 75
+      control: 5
+
+  S07:
+    id: "S07"
+    name: "Tri-Party Structure"
+    name_is: "Þríhliða uppbygging"
+    description: "City, pension fund, and developer all participate"
+    components:
+      ownership: "O7"
+      financing: "F7"
+      byggingarrettur: "B3"
+      infrastructure: "I6"
+    counterparty: "tri_party"
+    default_probability:
+      min: 0.01
+      likely: 0.015
+      max: 0.03
+    city_control_score: 35
+    equity_structure:
+      city_share: 0.25
+      pension_share: 0.50
+      developer_share: 0.25
+    goal_scores:
+      speed: 60
+      affordability: 70
+      quality: 75
+      financial: 55
+      risk: 70
+      control: 35
+
+  S08:
+    id: "S08"
+    name: "Félagsbústaðir Social Housing"
+    name_is: "Félagsbústaðir félagslegt húsnæði"
+    description: "Municipal housing company leads with pension financing"
+    components:
+      ownership: "O8"
+      financing: "F4"
+      byggingarrettur: "B2"
+      infrastructure: "I1"
+    counterparty: "felagsbustadir"
+    default_probability:
+      min: 0.01
+      likely: 0.025
+      max: 0.05
+    city_control_score: 75
+    affordability_commitment:
+      minimum_pct: 0.60
+      rental_pct: 0.80
+    goal_scores:
+      speed: 50
+      affordability: 95
+      quality: 70
+      financial: 30
+      risk: 60
+      control: 75
+
+  S09:
+    id: "S09"
+    name: "Phased Mixed Approach"
+    name_is: "Áfangaskipt blönduð nálgun"
+    description: "Different structures for different phases"
+    components:
+      ownership: "mixed"
+      financing: "mixed"
+      byggingarrettur: "B6"
+      infrastructure: "I5"
+    counterparty: "mixed"
+    default_probability:
+      overall: 0.03
+    city_control_score: 45
+    phases:
+      phase_1:
+        units: 800
+        structure: "S02"
+      phase_2_3:
+        units: 1600
+        structure: "S05"
+      phase_4:
+        units: 800
+        structure: "S08"
+    goal_scores:
+      speed: 70
+      affordability: 70
+      quality: 70
+      financial: 65
+      risk: 65
+      control: 45
+
+  S10:
+    id: "S10"
+    name: "Infrastructure-First City"
+    name_is: "Innviðir fyrst - Borgin"
+    description: "City builds infrastructure first, then sells phases"
+    components:
+      ownership: "O2"
+      financing: "F2"
+      byggingarrettur: "B1"
+      infrastructure: "I1"
+    counterparty: "developer_large"
+    default_probability:
+      min: 0.05
+      likely: 0.08
+      max: 0.12
+    city_control_score: 25
+    goal_scores:
+      speed: 60
+      affordability: 40
+      quality: 75
+      financial: 75
+      risk: 55
+      control: 25
+
+selection_guide:
+  by_goal_priority:
+    speed: ["S02", "S06", "S09"]
+    affordability: ["S08", "S05", "S03"]
+    quality: ["S01", "S05", "S07"]
+    financial: ["S04", "S02", "S06"]
+    risk: ["S04", "S05", "S06"]
+    control: ["S01", "S08", "S05"]
